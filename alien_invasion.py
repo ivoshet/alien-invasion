@@ -2,6 +2,7 @@ import sys
 import pygame
 from settings import Settings
 from ship import Ship
+from alien import Alien
 
 
 class AlienInvasion(object):
@@ -12,15 +13,23 @@ class AlienInvasion(object):
             (self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption('Alien invasion')
         self.ship = Ship(self)
+        self.alien = Alien(self)
 
     def run_game(self):
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-            self.screen.fill(self.settings.bg_color)
-            self.ship.blitme()
-            pygame.display.flip()
+            self._check_events()
+            self._update_screen()
+
+    def _check_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+    def _update_screen(self):
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme()
+        self.alien.blitme()
+        pygame.display.flip()
 
 
 if __name__ == '__main__':
