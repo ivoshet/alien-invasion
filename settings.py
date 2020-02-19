@@ -4,4 +4,4 @@ class Settings(object):
         self.screen_height = 600
         # make blue background
         self.bg_color = (200, 250, 250)
-        # self.bg_color = (230, 230, 230)
+        self.ship_speed = 1.5
