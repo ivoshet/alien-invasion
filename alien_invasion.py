@@ -10,8 +10,7 @@ class AlienInvasion(object):
     def __init__(self):
         self.init_display_and_font()
         self.settings = Settings()
-        self.screen = pygame.display.set_mode(
-            (self.settings.screen_width, self.settings.screen_height))
+        self.full_screen_method()
         pygame.display.set_caption('Alien invasion')
         self.ship = Ship(self)
         self.alien = Alien(self)
@@ -21,7 +20,8 @@ class AlienInvasion(object):
     def logger_setting(self):
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        f_text = '% (asctime)s - %(name)s - %(levelname)s - %(message)s'
+        formatter = logging.Formatter(f_text)
         fn = logging.FileHandler('logging.log')
         fn.setFormatter(formatter)
         logger.addHandler(fn)
@@ -54,6 +54,14 @@ class AlienInvasion(object):
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
+        elif event.key == pygame.K_q:
+            # for exit from game by push q button
+            sys.exit()
+
+    def full_screen_method(self):
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
