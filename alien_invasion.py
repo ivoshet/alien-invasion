@@ -3,6 +3,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from alien import Alien
+import logging
 
 
 class AlienInvasion(object):
@@ -14,6 +15,17 @@ class AlienInvasion(object):
         pygame.display.set_caption('Alien invasion')
         self.ship = Ship(self)
         self.alien = Alien(self)
+        self.logger_setting()
+
+    # the logger settings
+    def logger_setting(self):
+        logger = logging.getLogger()
+        logger.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fn = logging.FileHandler('logging.log')
+        fn.setFormatter(formatter)
+        logger.addHandler(fn)
+        self.logger = logging.getLogger('alien_invasion')
 
     def init_display_and_font(self):
         """the method for lower usage CPU"""
@@ -33,17 +45,23 @@ class AlienInvasion(object):
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = True
-                elif event.key == pygame.K_LEFT:
-                    self.ship.moving_left = True
+                self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RIGHT:
-                    print('the ship move to right')
-                    self.ship.moving_right = False
-                elif event.key == pygame.K_LEFT:
-                    print('the ship move to left')
-                    self.ship.moving_left = False
+                self._check_keyup_events(event)
+
+    def _check_keydown_events(self, event):
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+
+    def _check_keyup_events(self, event):
+        if event.key == pygame.K_RIGHT:
+            self.logger.info('go to right')
+            self.ship.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.logger.info('go to left')
+            self.ship.moving_left = False
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
