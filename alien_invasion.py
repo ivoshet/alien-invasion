@@ -20,7 +20,7 @@ class AlienInvasion(object):
     def logger_setting(self):
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)
-        f_text = '% (asctime)s - %(name)s - %(levelname)s - %(message)s'
+        f_text = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         formatter = logging.Formatter(f_text)
         fn = logging.FileHandler('logging.log')
         fn.setFormatter(formatter)
